@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Tambah Postingan
-        <a href="{{ url('posts') }}" class="btn btn-primary">kembali</a>
+        <a href="{{ url('posts') }}" class="btn btn-primary">kembali</a> {{-- action di form adalah menuju routing ke mana setelah tombol submit di klik(berhubungan dengan pemrosesan data), sedangkan redirect untuk ke halaman mana setelah tombol submit diklik --}}
     </h1>
     <form action="{{ url('posts') }}" method="POST" class="form-control">
         @csrf

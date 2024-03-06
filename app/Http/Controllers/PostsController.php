@@ -14,7 +14,8 @@ class PostsController extends Controller
     public function index()
     {
         $posts = DB::table('posts',)
-                    ->select('id','title','content','created_at') 
+                    ->select('id','title','content','created_at')
+                    ->where('active',true) //ketika data kolom active = 1 
                     ->get();
         $view_data = [
             'posts'=>$posts
