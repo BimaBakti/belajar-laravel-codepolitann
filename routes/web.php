@@ -17,11 +17,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-route::post('posts',[PostsController::class,'store']);//untuk memproses database, memasukkan data dari form ke database
-route::get('posts',[PostsController::class,'index']);
-route::get('posts/create',[PostsController::class,'create']);
-route::get('posts/{id}',[PostsController::class,'show']); /* pejet f12 untuk lompat ke method di controller nya */
-route::get('posts/{id}/edit',[PostsController::class,'edit']);
-route::patch('posts/{id}',[PostsController::class,'update']);//ini juga hanya untuk memproses data update (untuk meng edit butuh 2 route)
+route::post('posts',[PostsController::class,'store']);//untuk memproses database, memasukkan data dari (FORM) ke database(TAMBAH DATA)
+route::get('posts',[PostsController::class,'index']); //MENU UTAMA
+route::get('posts/create',[PostsController::class,'create']);//(TAMBAH DATA)
+route::get('posts/{id}',[PostsController::class,'show']); /* pejet f12 untuk lompat ke method di controller nya MENAMPILKAN DATA*/
+route::get('posts/{id}/edit',[PostsController::class,'edit']);//EDIT DATA
+route::patch('posts/{id}',[PostsController::class,'update']);//ini juga hanya untuk memproses data update (untuk meng edit butuh 2 route)(EDIT DATA)
+route::delete('posts/{id}',[PostsController::class,'destroy']); //delete
 //          nama endpoint, kelasnya      , metod didalam kelas
-
+/* ADA 2 FUNGSI MEMBUTUHKAN 2 METHOD
+1. MENAMBAH DATA\
+    A. HALAMAN TAMBAH POSTTINGAN (GET)
+    B. FUNGSI STORE UNTUK MEMPROSES , MEMASUKKAN DATA BARU DARI FORM TAMBAH (POST)
+2. MENGEDIT DATA
+    A. HALAMAN EDIT (GET)
+    B. FUNGSI UPDATE UNTUK MEMPROSES DATA, MENIMPA DATA BARU DARI FORM DI HALAMAN EDIT(PATCH)
+*/

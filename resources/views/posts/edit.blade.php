@@ -11,7 +11,8 @@
     <h1>Edit Postingan
         <a href="{{ url('posts') }}" class="btn btn-primary">kembali</a>
     </h1>
-    <form method="POST" action="{{ url("posts/$post->id") }}" class="form-control">
+<div class="container">
+    <form method="POST" action="{{ url("posts/$post->id") }}" class="form-control"> {{-- UNTUK EDIT LARAVEL, METHOD DI TAG FORM HARUS POST --}}
         @method('PATCH')
         @csrf
         <div class="mb-3">
@@ -24,6 +25,12 @@
           </div>
           <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
+        <form method="POST"  action="{{ url("posts/$post->id") }}" class="form-control">
+            @method('DELETE')
+            @csrf
+            <button type="submit" class="btn btn-danger">Hapus Postingan</button>
+        </form>
+</div>
         <script src="{{ asset('bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
     </body>
 </html>

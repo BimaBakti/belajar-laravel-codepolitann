@@ -102,7 +102,7 @@ class PostsController extends Controller
     public function update(Request $request, string $id)
     {
         $title = $request->input('title');
-        $content = $request->input('content')
+        $content = $request->input('content');// bila ada eror sintax cek titik koma sebelumnya
 
         DB::table('posts')
             ->where('id','=',$id)
@@ -119,6 +119,9 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-       
+       DB::table('posts')
+            ->where('id', $id)
+            ->delete();
+        return redirect("posts");
     }
 }
