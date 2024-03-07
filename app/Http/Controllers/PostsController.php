@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;    
@@ -13,10 +14,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = DB::table('posts',)
-                    ->select('id','title','content','created_at')
-                    ->where('active',true) //ketika data kolom active = 1 
-                    ->get();
+        $posts = post::active()->get();  //ketika data kolom active = 1  /* ketika model sudah di buat dalah hal ini post, maka use di atas otomatis terisi */
+                                       /* karena ('active',true) akan sering digunakan maka bisa dimasukkan scope kedalam model di dalam [class] post untuk meringkasnya */
         $view_data = [
             'posts'=>$posts
         ];
@@ -41,7 +40,7 @@ class PostsController extends Controller
         $title = $request->input('title');
         $content = $request->input('content');
 
-        DB::table('posts')->insert([
+        Post::insert([
             'title' => $title,
             'content' => $content,
             'created_at' => date('Y-m-d H:i:s'),
@@ -71,10 +70,8 @@ class PostsController extends Controller
      */
     public function show(string $id)
     { 
-        $post = DB::table('posts')
-        ->select('id','title','content','created_at') 
-        ->where('id','=',$id) //boleh operatornya tidak di tulis, jadi hanya 2 parameter
-        ->first();
+        $post = post::where('id','=',$id)->first();//boleh operatornya tidak di tulis, jadi hanya 2 parameter
+        
         $view_data = [
             'post' => $post
         ];
@@ -87,10 +84,7 @@ class PostsController extends Controller
      */
     public function edit(string $id)
     {
-        $post = DB::table('posts',)
-        ->select('id','title','content','created_at') 
-        ->where('id','=',$id)
-        ->first();
+        $post = post::where('id','=',$id)->first();
         $view_data = [
             'post' => $post
         ];
@@ -105,8 +99,7 @@ class PostsController extends Controller
         $title = $request->input('title');
         $content = $request->input('content');// bila ada eror sintax cek titik koma sebelumnya
 
-        DB::table('posts')
-            ->where('id','=',$id)
+        Post::where('id','=',$id)
             ->update([
                 'title' => $title,
                 'content' => $content,
@@ -120,8 +113,7 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-       DB::table('posts')
-            ->where('id', $id)
+       post::where('id', $id)
             ->delete();
         return redirect("posts");
     }
