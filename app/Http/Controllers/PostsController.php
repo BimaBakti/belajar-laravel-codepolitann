@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\post;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;    
@@ -14,9 +14,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = post::active()->get();  //ketika data kolom active = 1  /* ketika model sudah di buat dalah hal ini post, maka use di atas otomatis terisi */
+        $posts = Post::active()->get();  //ketika data kolom active = 1  /* ketika model sudah di buat dalah hal ini post, maka use di atas otomatis terisi */
                                        /* karena ('active',true) akan sering digunakan maka bisa dimasukkan scope kedalam model di dalam [class] post untuk meringkasnya */
-        $view_data = [
+        $view_data = [ /* post::active()->withTrashed()->get(); >>>> withTrased adalah scope bawaan laravel untuk menampilkan data yang sudah di deleted(fungsi destroy)*/
             'posts'=>$posts
         ];
 
@@ -70,13 +70,16 @@ class PostsController extends Controller
      */
     public function show(string $id)
     { 
-        $post = post::where('id','=',$id)->first();//boleh operatornya tidak di tulis, jadi hanya 2 parameter
-        
+        $post = Post::where('id','=',$id)->first();//boleh operatornya tidak di tulis, jadi hanya 2 parameter
+        $comments = $post->comments()->get();
+        $total_comments = $post->total_comments();     /* ingat kalau method nya class harus di instance dulu, karena sudah di instance di $post */
+                                                        /* tinggal panggil $post */
         $view_data = [
-            'post' => $post
-        ];
-
-        return view('posts.show', $view_data);
+            'post'                              => $post,
+            'comments'                          => $comments, 
+            'total_comments'                    => $total_comments, 
+        ];/* ini yang kita panggi di blade   */
+               return view('posts.show', $view_data);
     }
 
     /**
@@ -84,7 +87,7 @@ class PostsController extends Controller
      */
     public function edit(string $id)
     {
-        $post = post::where('id','=',$id)->first();
+        $post = Post::where('id','=',$id)->first();
         $view_data = [
             'post' => $post
         ];
@@ -113,8 +116,7 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-       post::where('id', $id)
-            ->delete();
+        Post::where('id', $id)->delete();
         return redirect("posts");
     }
 }
