@@ -23,7 +23,7 @@ class Post extends Model
     }
 
     public function total_comments(){
-        return $this->comments()->count();
+        return $this->comments()->count();/* count bawaan laravel */
     }
-
+    
 }
