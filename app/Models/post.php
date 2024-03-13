@@ -11,6 +11,21 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
 
+
+    public $fillable = [
+        'title',
+        'content',
+    ];
+
+    public static function boot() { /* jadi jika memanggil event handler baiknya pakai boot, dalah hal ini "creating" */
+        parent::boot(); /* ini juga perlu */
+        static::creating(function ($post) {/* tinggal tulis event handler yang di inginkan */
+            $post->slug = str_replace(' ','-',$post->title);/* $post bisa di isi apa saja , tapi agar memudahkan karena ini juga merupakan instansi dari tabel Post */
+        });        /* ini kolom slug yang sudah dibuat migrasinya sebelumnya */                         
+
+    }
+    
+
     public function comments( ){
         return $this->hasMany(Comment::class); /* jadi,  */
                                                 /*  1. $this disini adalah merujuk pada class post  */
@@ -24,6 +39,7 @@ class Post extends Model
 
     public function total_comments(){
         return $this->comments()->count();/* count bawaan laravel */
+    
     }
     
 }
