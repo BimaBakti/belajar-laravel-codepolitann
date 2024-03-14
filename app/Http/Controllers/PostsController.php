@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;    
+use Illuminate\Support\Facades\Auth;    
 
 class PostsController extends Controller
 {
@@ -14,6 +15,9 @@ class PostsController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $posts = Post::active()->get();  //ketika data kolom active = 1  /* ketika model sudah di buat dalah hal ini post, maka use di atas otomatis terisi */
                                        /* karena ('active',true) akan sering digunakan maka bisa dimasukkan scope kedalam model di dalam [class] post untuk meringkasnya */
         $view_data = [ /* post::active()->withTrashed()->get(); >>>> withTrased adalah scope bawaan laravel untuk menampilkan data yang sudah di deleted(fungsi destroy)*/
@@ -29,6 +33,9 @@ class PostsController extends Controller
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         return view('posts.create');
     }
 
@@ -37,6 +44,9 @@ class PostsController extends Controller
      */
     public function store(Request $request)   /* tujuan store ini adalah memasukkan data dari form(create.blade.php ke dalam database(post.txt)) */
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $title = $request->input('title');
         $content = $request->input('content');
 
@@ -68,6 +78,9 @@ class PostsController extends Controller
      */
     public function show(string $id)
     { 
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $post = Post::where('id','=',$id)->first();//boleh operatornya tidak di tulis, jadi hanya 2 parameter
         $comments = $post->comments()->get();
         $total_comments = $post->total_comments();     /* ingat kalau method nya class harus di instance dulu, karena sudah di instance di $post */
@@ -85,11 +98,15 @@ class PostsController extends Controller
      */
     public function edit(string $id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $post = Post::where('id','=',$id)->first();
         $view_data = [
             'post' => $post
         ];
         return view('posts.edit', $view_data);
+        
     }
 
     /**
@@ -97,6 +114,9 @@ class PostsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $title = $request->input('title');
         $content = $request->input('content');// bila ada eror sintax cek titik koma sebelumnya
 
@@ -114,6 +134,9 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         Post::where('id', $id)->delete();
         return redirect("posts");
     }
