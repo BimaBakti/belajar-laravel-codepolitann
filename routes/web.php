@@ -22,6 +22,8 @@ Route::get('/', function () {
 route::get('login',[AuthController::class,'login']);
 route::post('login',[AuthController::class,'authenticate']);
 route::get('logout',[AuthController::class,'logout']);
+route::get('register',[AuthController::class,'register_form']);
+route::post('register',[AuthController::class,'register']);
 route::post('posts',[PostsController::class,'store']);//untuk memproses database, memasukkan data dari (FORM) ke database(TAMBAH DATA)
 route::get('posts',[PostsController::class,'index']); //MENU UTAMA
 route::get('posts/create',[PostsController::class,'create']);//(TAMBAH DATA)

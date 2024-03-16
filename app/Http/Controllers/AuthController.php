@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Session;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Hash;
+use Session;
 
 class AuthController extends Controller
 {
@@ -28,5 +30,30 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
         return redirect('login');
+    }
+
+    public function register_form()
+    {
+        return view('auth.register');
+
+    }
+
+    public function register (Request $request)
+    {
+        $request->validate([ /* validate() bawaan laravel untuk validasi form, */
+            'name'      => 'required',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required|min:6|confirmed', /* name di html, password === pasword_confirmation */
+        ]);
+        
+        User::create([ /* jangan lupa import use */
+            'name'=> $request->input('name'),
+            'email'=> $request->input('email'),
+            'password'=> Hash::make($request->input('password')), /* bungkus ke Hash::make untuk generate pasworr hash */
+                        /* jangan lupa import use */
+        ]);
+
+        return redirect('login');
+
     }
 }

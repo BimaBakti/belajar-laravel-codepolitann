@@ -16,7 +16,7 @@
                     <form method="POST" action="{{url('login')}}"> {{-- action di form itu bagian pemrosesan data yang dikirim ke routing --}}
                         @csrf
                         <div class="mb-3">
-                          <label for="email" class="form-label">Email address</label>
+                          <label for="email" class="form-label">Email</label>
                           <input type="email" class="form-control" id="email" name="email">
                         </div>
                         <div class="mb-3">
