@@ -52,7 +52,7 @@ class PostsController extends Controller
         $title = $request->input('title');
         $content = $request->input('content');
 
-        Post::create([
+        $post = Post::create([ /* ini cuy $post jadi properti di mailnya nanti */
             'title' => $title,
             'content' => $content,
            /* ini nama table  | 
@@ -72,8 +72,8 @@ class PostsController extends Controller
         // /* dalam kasus ini, karena databasenya .txt, maka kita akan menimpa apa yang ada di post.txt dengan isi $post yang baru */
         // Storage::write('posts.txt', $posts); /* kalau salah penulisan nama file, maka akan create file baru sesuai nama */
         
-        Mail::to('bima.bakti.mandala@gmail.com')->send(new BlogPosted());
-
+        Mail::to(Auth::user()->email)->send(new BlogPosted($post)); /* jadi pertama methot mailnya kita isikan parameter untuk construct di mail sebelah */
+            /* mengambil email user yang sedang login */
         return redirect('posts'); /* kembailkan, redirect ke endpoint posts */
 
     }

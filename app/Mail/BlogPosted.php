@@ -1,5 +1,5 @@
 <?php
-
+/* INI DIBUAT DENGAN ARTISAN MAKE:MAIL */
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -14,13 +14,14 @@ class BlogPosted extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $post; /* definisikan properti intinya buat mernampung data yang udah di create di controller*/
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($post) /* kasih $post di construct */
     {
-        //
-    }
+        $this->post = $post;/* menunjuk properti yang digunakan saat ini ($post) */
+    }/*       ($post) */
 
     /**
      * Get the message envelope.
@@ -29,7 +30,7 @@ class BlogPosted extends Mailable
     {
         return new Envelope(
             from: new Address('bmbakti@gmail.com', 'bbm'),
-            subject: 'Blog Baru(ini subjek email)',
+            subject: "Blog Baru: {$this->post->title}",
         );
     }
 
@@ -40,6 +41,9 @@ class BlogPosted extends Mailable
     {
         return new Content(
             view: 'mails.blog_posted', /* buat folder baru biar rapi */
+            with:[
+                'post' => $this->post
+            ]
         );
     }
 
