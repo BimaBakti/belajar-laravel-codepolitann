@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Mail\BlogPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;    
-use Illuminate\Support\Facades\Auth;    
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Mail;   
 
 class PostsController extends Controller
 {
@@ -69,6 +71,9 @@ class PostsController extends Controller
         // $posts = implode("\n", $posts);
         // /* dalam kasus ini, karena databasenya .txt, maka kita akan menimpa apa yang ada di post.txt dengan isi $post yang baru */
         // Storage::write('posts.txt', $posts); /* kalau salah penulisan nama file, maka akan create file baru sesuai nama */
+        
+        Mail::to('bima.bakti.mandala@gmail.com')->send(new BlogPosted());
+
         return redirect('posts'); /* kembailkan, redirect ke endpoint posts */
 
     }
